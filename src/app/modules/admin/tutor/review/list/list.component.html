@@ -1,0 +1,154 @@
+<div class="flex flex-col flex-auto min-w-0 bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    รีวิวนักเรียน
+                </h2>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-3 sm:p-10">
+        <form class="flex flex-col mt-3 pb-4 bg-card shadow overflow-hidden ng-valid" [formGroup]="formData">
+            <div class="flex flex-col sm:flex-row p-8">
+
+
+                <div class="flex flex-auto flex-wrap">
+                    <div class="flex flex-col w-full lg:w-4/4 p-5">
+                        <fuse-alert [appearance]="'outline'" [type]="'info'">
+                            รีวิวที่ลูกค้าเขียนในโปรไฟล์ของคุณ<br> หากคุณโปรโมทโปรไฟล์ของคุณ คุณสามารถเลือกปักหมุดรีวิวที่คุณต้องการได้มากสุด 3 รีวิวให้แสดงด้านบนสุดเสมอ
+                            <br> ยังไม่มีรีวิวใดๆจากลูกค้า
+
+                            <br> ติดต่อลูกค้าเพิ่มและอย่าลืมขอให้ลูกค้าเขียนรีวิวให้คุณ
+                        </fuse-alert>
+
+                    </div>
+
+                    <div class="flex flex-col w-full lg:w-4/4 p-5">
+                        <!-- Post 2 -->
+                        <fuse-card class="flex flex-col max-w-140 w-full mt-8">
+                            <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-1">
+                                <img class="w-10 h-10 rounded-full mr-4" src="assets/images/avatars/female-01.jpg" alt="Card cover image">
+                                <div class="flex flex-col">
+                                    <span class="font-semibold leading-none">Caroline Lundu</span>
+                                    <span class="text-sm text-secondary leading-none mt-1">29 minutes ago</span>
+                                </div>
+                                <button class="ml-auto -mr-4" mat-icon-button [matMenuTriggerFor]="postCardMenu08">
+                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:dots-vertical'">
+                                    </mat-icon>
+                                </button>
+                                <mat-menu #postCardMenu08="matMenu">
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:save'">
+                                            </mat-icon>
+                                            <span>Save post</span>
+                                        </span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:eye-off'">
+                                            </mat-icon>
+                                            <span>Hide post</span>
+                                        </span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:clock'">
+                                            </mat-icon>
+                                            <span>Snooze for 30 days</span>
+                                        </span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3"
+                                                [svgIcon]="'heroicons_solid:minus-circle'"></mat-icon>
+                                            <span>Hide all</span>
+                                        </span>
+                                    </button>
+                                    <mat-divider class="my-2"></mat-divider>
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3"
+                                                [svgIcon]="'heroicons_solid:exclamation'"></mat-icon>
+                                            <span>Report post</span>
+                                        </span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span class="flex items-center">
+                                            <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:bell'">
+                                            </mat-icon>
+                                            <span>Turn on notifications for this post</span>
+                                        </span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div class="m-6 sm:mx-8">
+                                <p>
+                                    We'll put a happy little sky in here. We touch the canvas, the canvas takes what it wants. A little happy sunlight shining through there. Let's build some happy little clouds up here. I was blessed with a very steady hand; and it comes in very handy when
+                                    you're doing these little delicate things. This is the fun part.
+                                </p>
+                                <p class="mt-4">
+                                    Isn't it great to do something you can't fail at? Little trees and bushes grow however makes them happy. Trees get lonely too, so we'll give him a little friend. There are no mistakes. You can fix anything that happens.
+                                </p>
+                            </div>
+                            <div class="flex items-center mx-3 sm:mx-5">
+                                <button class="px-3 mr-1" mat-button [routerLink]="['./']">
+                                    <mat-icon class="icon-size-5 text-red-500 mr-2" [svgIcon]="'heroicons_solid:heart'">
+                                    </mat-icon>
+                                    <span>Unlike</span>
+                                </button>
+                                <button class="px-3 mr-1" mat-button [routerLink]="['./']">
+                                    <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_solid:chat-alt'">
+                                    </mat-icon>
+                                    <span>Comment</span>
+                                </button>
+                                <button class="px-3 mr-1" mat-button [routerLink]="['./']">
+                                    <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_solid:share'"></mat-icon>
+                                    <span>Share</span>
+                                </button>
+                            </div>
+                            <hr class="border-b mx-6 sm:mx-8 mt-4 mb-6">
+                            <div class="flex flex-col sm:flex-row sm:items-center mx-6 sm:mx-8 mb-4 sm:mb-6">
+                                <div class="flex items-center">
+                                    <img class="w-6 h-6 m-0.5 rounded-full text-card ring-2 ring-white" src="assets/images/avatars/female-02.jpg" alt="Card cover image">
+                                    <img class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white" src="assets/images/avatars/female-04.jpg" alt="Card cover image">
+                                    <img class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white" src="assets/images/avatars/male-09.jpg" alt="Card cover image">
+                                    <img class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white" src="assets/images/avatars/male-07.jpg" alt="Card cover image">
+                                    <div class="text-md tracking-tight ml-3">You and 24 more liked this</div>
+                                </div>
+                                <div class="hidden sm:flex flex-auto"></div>
+                                <div class="flex items-center mt-4 sm:mt-0">
+                                    <button class="px-3 mr-1 -ml-2 sm:ml-0" mat-button>
+                                        4 shares
+                                    </button>
+                                    <button class="px-3 sm:-mr-3" mat-button>
+                                        No comments
+                                    </button>
+                                </div>
+                            </div>
+                        </fuse-card>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- button -->
+            <div class="flex items-center justify-end w-full border-t px-8 py-4">
+                <div class="flex items-center justify-end">
+                    <button class="px-6 ml-3 mat-primary" mat-flat-button (click)="update()">
+                        <mat-icon svgIcon="heroicons_solid:check"></mat-icon>
+                        บันทึก
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

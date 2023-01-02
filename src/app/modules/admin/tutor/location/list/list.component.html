@@ -1,0 +1,106 @@
+<div class="flex flex-col flex-auto min-w-0 bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    สถานที่สอน
+                </h2>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-3 sm:p-10">
+        <form class="flex flex-col mt-3 pb-4 bg-card shadow overflow-hidden ng-valid" [formGroup]="formData">
+            <div class="flex flex-col sm:flex-row p-8">
+
+
+                <div class="flex flex-auto flex-wrap">
+                    <div class="flex flex-col w-full lg:w-4/4 p-5">
+                        <fuse-alert [appearance]="'outline'" [type]="'info'">
+                            เพิ่มข้อมูลสถานที่ในโปรไฟล์ของคุณ โดยสถานที่นั้นอาจเป็นพื้นที่ที่คุณให้บริการ ออฟฟิศส่วนตัวของคุณ หรือสถานที่สาธารณะก็ได้ ข้อมูลเกี่ยวกับสถานที่ทั้งหมดจะถูกเปิดเผยต่อผู้เข้าชมเว็บไซต์ในโปรไฟล์ของคุณ
+                        </fuse-alert>
+                    </div>
+                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
+                        <div class="flex flex-wrap items-center justify-start -mx-1 mb-3 ng-star-inserted">
+                            <mat-icon svgIcon="heroicons_solid:check"></mat-icon>
+                            กรุงเทพมหานคร
+                        </div>
+                        <div class="flex flex-wrap items-center justify-start -mx-1 ng-star-inserted">
+                            <div class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap text-blue-800 bg-blue-100 ng-star-inserted">
+                                คลองสาน
+                            </div>
+                            <!---->
+                            <div class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap text-indigo-800 bg-indigo-100 ng-star-inserted">
+                                คลองสามวา
+                            </div>
+                            <!---->
+                            <div class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap text-red-800 bg-red-100 ng-star-inserted">
+                                คลองเตย
+                            </div>
+                            <!---->
+                            <div class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap text-teal-800 bg-teal-100 ng-star-inserted">
+                                คันนายาว
+                            </div>
+                            <!---->
+                            <!---->
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-full lg:w-2/4 mt-5 p-5">
+                        <!--firstname and lastname-->
+                        <div class="flex">
+                            <mat-form-field class="w-full">
+                                <mat-label>
+                                    จังหวัด
+                                </mat-label>
+                                <mat-select [formControlName]="'country'">
+                                    <mat-option [value]="''">
+                                        <span>เลือกจังหวัด</span>
+                                    </mat-option>
+                                    <mat-option *ngFor="let item of CountryData" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-full lg:w-2/4 mt-5 p-5">
+                        <!--firstname and lastname-->
+                        <div class="flex">
+                            <mat-form-field class="w-full">
+                                <mat-label>
+                                    อำเภอ / เขต
+                                </mat-label>
+                                <mat-select [formControlName]="'district'">
+                                    <mat-option [value]="''">
+                                        <span>เลือกจังหวัด</span>
+                                    </mat-option>
+                                    <mat-option *ngFor="let item of DistrictData" [value]="item">
+                                        {{item}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- button -->
+            <div class="flex items-center justify-end w-full border-t px-8 py-4">
+                <div class="flex items-center justify-end">
+                    <button class="px-6 ml-3 mat-primary" mat-flat-button (click)="update()">
+                        <mat-icon svgIcon="heroicons_solid:check"></mat-icon>
+                        บันทึก
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
