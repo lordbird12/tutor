@@ -106,7 +106,7 @@ export class AuthService {
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post(environment.API_URL + '/api/auth/login_admin', credentials).pipe(
+        return this._httpClient.post(environment.API_URL_Login + '/api/auth/login_admin', credentials).pipe(
             switchMap((response: any) => {
                 if (response.code === 200) {
                     this._requireResetPassword = true;

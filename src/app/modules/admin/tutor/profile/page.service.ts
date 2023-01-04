@@ -35,6 +35,7 @@ import {
 import { environment } from 'environments/environment';
 import { AssetCategory } from 'app/shared/asset-category';
 import { DataTablesResponse } from 'app/shared/datatable.types';
+
 // import { UserDetail } from '../user/user.types';
 const token = localStorage.getItem('accessToken') || null;
 @Injectable({
@@ -1299,7 +1300,8 @@ export class Service {
             );
     };
     //* UPDATE info by tutor_id
-    saveInfo(data: any): Observable<any> {
+    saveInfo(data: any): Observable<any> { 
+        // return  data
         return this._httpClient
             .post(
                 environment.API_URL + '/api/info',
@@ -1308,14 +1310,16 @@ export class Service {
             )
             .pipe(
                 switchMap((response: any) => {
-                    // Return a new observable with the response
                     return of(response);
-                })
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
             );
+            
     }
 
-
-
+ 
 
 
 

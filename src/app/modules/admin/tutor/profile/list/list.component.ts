@@ -13,8 +13,10 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { sortBy, startCase } from 'lodash-es';
 import { AssetType, DataPosition, PositionPagination } from '../page.types';
 import { Service } from '../page.service';
+import { ServiceShared } from 'app/shared/shared.service'; 
 import { MatTableDataSource } from '@angular/material/table';
-import { FuseAlertType , FuseAlertService } from '@fuse/components/alert';
+
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'list',
@@ -45,8 +47,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _matDialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _authService: AuthService,
-        private _fuseAlertService: FuseAlertService
+        private _authService: AuthService, 
+        private _Ssh: ServiceShared,
+
     ) { 
         this.formData = this._formBuilder.group({
             name: ['', Validators.required],
@@ -117,104 +120,28 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     textStatus(status: string): string {
         return startCase(status);
     }
+ 
+    update() {  
+        let postData = { tutor_id:this.tutor_id , ...this.formData.value};
+        // let postData = { tutor_id: 0 , ...this.formData.value};
+        this._Service.saveInfo(postData).subscribe((resp: any) => {   
+            if(resp.status == true){ 
+                  this._Ssh.Toast.fire({
+                    icon: 'success',
+                    title: 'บันทึกข้อมูลเรียบร้อย'
+                  })
+            }else{ 
+                this._Ssh.Toast.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด : '+ resp.code, 
+                  }) 
+            } 
+        }) ;
 
-    update2(): void {
-    
-        this.flashMessage = null;
-        this.flashErrorMessage = null;
-        // Return if the form is invalid
-        if (this.formData.invalid) {
-            return;
-        }
-        // Open the confirmation dialog
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'แก้ไขรายการ',
-            message: 'คุณต้องการแก้ไขรายการใช่หรือไม่ ',
-            icon: {
-                show: false,
-                name: 'heroicons_outline:exclamation',
-                color: 'warning',
-            },
-            actions: {
-                confirm: {
-                    show: true,
-                    label: 'ยืนยัน',
-                    color: 'primary',
-                },
-                cancel: {
-                    show: true,
-                    label: 'ยกเลิก',
-                },
-            },
-            dismissible: true,
-        });
-
-        // Subscribe to the confirmation dialog closed action
-        confirmation.afterClosed().subscribe((result) => {
-            // If the confirm button pressed...
-            if (result === 'confirmed') {
-                // Disable the form 
-                let postData = { tutor_id:this.tutor_id , ...this.formData.value}
-                this._Service.saveInfo(postData).subscribe({
-                    next: (resp: any) => {
-                        this._router
-                            .navigateByUrl('tutor/profile/list')
-                            .then(() => {});
-                    },
-                    error: (err: any) => {
-                        this._fuseConfirmationService.open({
-                            title: 'กรุณาระบุข้อมูล',
-                            message: err.error.message,
-                            icon: {
-                                show: true,
-                                name: 'heroicons_outline:exclamation',
-                                color: 'warning',
-                            },
-                            actions: {
-                                confirm: {
-                                    show: false,
-                                    label: 'ยืนยัน',
-                                    color: 'primary',
-                                },
-                                cancel: {
-                                    show: false,
-                                    label: 'ยกเลิก',
-                                },
-                            },
-                            dismissible: true,
-                        });
-                        console.log(err.error.message);
-                    },
-                });
-            }
-        });
-    }
-
-    update() { 
-        let postData = { tutor_id:this.tutor_id , ...this.formData.value}
-        this._Service.saveInfo(postData).subscribe((resp: any) => { 
-            // this.itemData = resp.data ? resp.data : [];  
-            console.log('resp' , resp);  
-            // resp.status == true ?  this.showFlashMessage("success") :this.showFlashMessage("error")  ;
-           
-        this.showAlert = true; 
-        console.log('this.showAlert' , this.showAlert)
-        this.showFuseAlert('alertSave');
-        setTimeout(() => this.dismissFuseAlert('alertSave'), 2000);
-         
-        });
 
         
  
     }
 
-    /**
-     * Fuse Alert Service
-     */
-    dismissFuseAlert(name: string): void {
-        this._fuseAlertService.dismiss(name);
-    }
-    showFuseAlert(name: string): void {
-        this._fuseAlertService.show(name);
-    }
+  
 }
