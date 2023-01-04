@@ -84,12 +84,12 @@
 
 <!-- The dialog -->
 <div id="dialog"
-    class=" hidden fixed h-4/5 sm:h-4/5 z-999 top-24 sm:top-16 left-0 sm:left-1/4 inset-0 w-full sm:w-6/12 md:w-6/12 bg-white rounded-md px-5 py-5 space-y-5 drop-shadow-lg">
+    class=" hidden fixed h-4/5 sm:h-4/5 z-999 top-24 sm:top-16 left-0 sm:left-1/4 inset-0 w-full sm:w-6/12 md:w-6/12 bg-white rounded-md px-5 py-5 drop-shadow-lg">
     <!-- header -->
     <!-- <div class="flex items-start justify-between"> -->
     <div class="flex items-start justify-between">
 
-        <div class="flex flex-col w-full lg:w-6/6 py-1">
+        <div class="flex flex-col w-full lg:w-6/6 py-2">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                 ข้อมูลวิชาสอบที่รับสอน
             </h3>
@@ -220,7 +220,7 @@
 
     </div>
     <!-- Footer -->
-    <div class="mt-2 flex justify-end">
+    <div class="mt-4 flex justify-end">
         <button id="save" mat-raised-button bg-blue-200 (click)="dialogSave()"> บันทึก </button>
         <button id="close" mat-raised-button bg-primary-200 color="primary" (click)="actionClickDialog('Close')">
             ปิดหน้าต่าง</button>
