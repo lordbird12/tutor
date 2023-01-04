@@ -16,11 +16,23 @@
     <!-- Main -->
     <div class="flex-auto p-3 sm:p-10">
         <form class="flex flex-col mt-3 pb-4 bg-card shadow overflow-hidden ng-valid" [formGroup]="formData">
-            <div class="flex flex-col sm:flex-row p-8">
+            <div class="flex flex-col sm:flex-row p-8"> 
 
-
-                <div class="flex flex-auto flex-wrap">
+                <div class="flex flex-auto flex-wrap"> 
                     <div class="flex flex-col w-full lg:w-4/4 p-5">
+                        <!-- <fuse-alert *ngIf="showAlert" [type]="'success'" [appearance]="'outline'">
+                            <span fuseAlertTitle> บันทึกข้อมูลเรียบร้อย</span> 
+                        </fuse-alert> -->
+                        <fuse-alert   *ngIf="showAlert"
+                            [appearance]="'outline'"  
+                            [name]="'alertSave'"
+                            [type]="'success'"
+                            [dismissible]="true" 
+                            [dismissed]="false" 
+                            >
+                             <b> บันทึกข้อมูลเรียบร้อย</b>
+                        </fuse-alert>
+                        <br>
                         <fuse-alert [appearance]="'outline'" [type]="'info'">
                             เพื่อป้องกันโปรไฟล์ของคุณถูกบล็อก อย่าเขียนข้อมูลการติดต่อเช่น เบอร์โทร ไลน์ไอดี หรืออีเมล
                         </fuse-alert>
@@ -28,11 +40,9 @@
                     <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
                         <!--firstname and lastname-->
                         <div class="flex">
-                            <mat-form-field class="w-full">
-                                <mat-label>
-                                    ชื่อของคุณ
-                                </mat-label>
-                                <input matInput [formControlName]="'name'">
+                            <mat-form-field class="w-full"> 
+                                <mat-label class="font-bold">  ชื่อของคุณ</mat-label>
+                                <input matInput [formControlName]="'name'" >
                             </mat-form-field>
                         </div>
                     </div>
@@ -54,7 +64,6 @@
                     </button>
                 </div>
             </div>
-        </form>
-
+        </form> 
     </div>
 </div>

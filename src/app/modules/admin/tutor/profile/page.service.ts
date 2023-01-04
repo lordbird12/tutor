@@ -1282,4 +1282,41 @@ export class Service {
                 })
             );
     }
+
+
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods Profile-list
+    // -----------------------------------------------------------------------------------------------------
+    //* GET info by tutor_id
+    getInfoById(tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/info/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* UPDATE info by tutor_id
+    saveInfo(data: any): Observable<any> {
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/info',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    // Return a new observable with the response
+                    return of(response);
+                })
+            );
+    }
+
+
+
+
+
+
 }
