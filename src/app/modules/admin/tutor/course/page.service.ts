@@ -1282,4 +1282,58 @@ export class Service {
                 })
             );
     }
+
+
+
+     // -----------------------------------------------------------------------------------------------------
+    // @ Public methods course
+    // -----------------------------------------------------------------------------------------------------
+    //* list dropdown course by tutor_id
+    listDrdwCourse (tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/get_course/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* GET course by tutor_id
+    getCourseById(tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/course/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* UPDATE course by tutor_id
+    saveCourse(data: any): Observable<any> { 
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/course',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            );
+            
+    }
+    listDrdwSubject (tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/get_service/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
 }

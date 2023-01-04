@@ -13,7 +13,10 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { sortBy, startCase } from 'lodash-es';
 import { AssetType, DataPosition, PositionPagination } from '../page.types';
 import { Service } from '../page.service';
+import { ServiceShared } from 'app/shared/shared.service';   
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
+
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
@@ -27,8 +30,10 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     formData: FormGroup
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     flashMessage: 'success' | 'error' | null = null;
-    isLoading: boolean = false;
-
+    isLoading: boolean = false; 
+    course_price:any  ;
+    tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
+    subjects : any;
     /**
      * Constructor
      */
@@ -43,7 +48,16 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
+        private _Ssh: ServiceShared,
+
     ) {
+        this.formData = this._formBuilder.group({
+            name: ['', Validators.required],
+            target: ['', Validators.required],
+            price_hour: ['', Validators.required], 
+            tutor_service_id: ['', Validators.required], 
+        })
+       
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -54,13 +68,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.formData = this._formBuilder.group({
-            phone: ['', Validators.required],
-            line: ['', Validators.required],
-            facebook: ['', Validators.required],
-            youtube: ['', Validators.required],
-            website: ['', Validators.required],
-        })
+        this.listDrdwSubject();
+        this.display(); 
+        // setTimeout(() => {
+        //     this.display(); 
+        // }, 1000);
+       
+         
+        
+       
     }
 
 
@@ -69,7 +85,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      * After view init
      */
     ngAfterViewInit(): void {
-
+        
     }
 
     /**
@@ -84,9 +100,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
-
-
+  
 
     resetForm(): void {
         this.formData.reset();
@@ -116,9 +130,57 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     textStatus(status: string): string {
         return startCase(status);
     }
+    
+    display(): void {
+        this._Service.listDrdwPrice(this.tutor_id).subscribe((resp: any) => { 
+            console.clear();
+            this.course_price = resp ? resp : { data: [] };   
 
-    update() {
-        //
+            console.log(this.course_price )
+        }); 
+     
+    } 
+
+    update(): void  {
+        if(this.formData.valid === true){
+            let postData = {
+                tutor_id: this.tutor_id, 
+                ...this.formData.value,
+            };  
+            console.log('dialogSave postData' , postData);  
+            //   this._Service.saveCourse(postData).subscribe((resp: any) => {
+            //       if (resp.status === true) {
+            //           this._Ssh.Toast.fire({
+            //               icon: 'success',
+            //               title: 'บันทึกข้อมูลสำเร็จ',
+            //           });
+            //           location.reload();
+            //       } else {
+            //           let code = resp.code ? resp.code : '';
+            //           this._Ssh.Toast_Stick.fire({
+            //               icon: 'error',
+            //               title: 'บันทึกข้อมูลไม่สำเร็จ',
+            //               text: 'เกิดข้อผิดพลาด : ' + code,
+            //           });
+            //       }
+            //   });
+
+        }else{
+
+            Swal.fire(
+                "Warning!", //title
+                "กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!", //main text
+                "warning" //icon
+              );
+
+        }
+    }
+
+    listDrdwSubject(): void {
+        this._Service.listDrdwSubject(this.tutor_id).subscribe((resp: any) => { 
+            console.clear();
+            this.subjects = resp ? resp : { data: [] };  
+        }); 
     }
 
 }

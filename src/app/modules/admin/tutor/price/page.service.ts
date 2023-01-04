@@ -1282,4 +1282,70 @@ export class Service {
                 })
             );
     }
+
+    
+      //* list dropdown price by tutor_id
+      listDrdwPrice (tutor_id: any): Observable<CoursePrice[]> { 
+        return this._httpClient
+            .get<CoursePrice[]>(environment.API_URL + '/api/get_price/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* GET Price by tutor_id
+    getPriceById(tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/price/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* UPDATE Price by tutor_id
+    savePrice(data: any): Observable<any> { 
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/price',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            );
+            
+    };
+    listDrdwSubject (tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/get_service/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    
 }
+ 
+export interface CoursePrice {
+    create_by: string;
+    created_at: Date;
+    deleted_at: Date;
+    id: number;
+    name: string;
+    price_hour: string;
+    target: string;
+    tutor_id: string;
+    tutor_service_id: string;
+    update_by: string;
+    updated_at: Date;
+}
+ 

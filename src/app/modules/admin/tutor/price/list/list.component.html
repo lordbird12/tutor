@@ -28,13 +28,13 @@
                     </div>
                     <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 sm:mt-10">
-                            <!-- Course -->
-                            <div class="flex flex-col shadow rounded-2xl overflow-hidden bg-card">
+                               <!-- Course -->  
+                               <div  *ngFor="let cp of course_price.data;  " class="flex flex-col shadow rounded-2xl overflow-hidden bg-card">
                                 <div class="flex flex-col p-6">
                                     <div class="flex items-center justify-between">
                                         <!-- Course category -->
                                         <div class="py-0.5 px-3 rounded-full text-sm font-semibold text-blue-800 bg-blue-100 dark:text-blue-50 dark:bg-blue-500">
-                                            หมวดหมู่ : คณิตศาสตร์
+                                            หมวดหมู่ : ภาษาต่างประเทศ
                                         </div>
                                         <!-- Completed at least once -->
                                         <div class="flex items-center">
@@ -43,15 +43,15 @@
                                             </ng-container>
                                         </div>
                                     </div>
-                                    <div class="mt-4 text-lg font-medium">คณิตศาสตร์ ม.5</div>
+                                    <div class="mt-4 text-lg font-medium">{{cp.name}}</div>
                                     <!-- Course title & description -->
-                                    <div class="mt-0.5 line-clamp-2 text-secondary">สิ่งที่จะได้เรียน</div>
+                                    <div class="mt-0.5 line-clamp-2 text-secondary">{{cp.target}}</div>
                                     <div class="w-12 h-1 my-6 border-t-2"></div>
-                                    <!-- Course time -->
-                                    <div class="flex items-center leading-5 text-md text-secondary">
-                                        <mat-icon class="icon-size-5 text-hint" [svgIcon]="'heroicons_solid:clock'">
-                                        </mat-icon>
-                                        <div class="ml-1.5">1,500 บาท / ชั่วโมง</div>
+                                   
+                                    <!-- Course completion -->
+                                    <div class="flex items-center mt-2 leading-5 text-md text-secondary">
+                                        <mat-icon class="icon-size-5 text-hint" [svgIcon]="'heroicons_solid:cash'"></mat-icon>
+                                        <div class="ml-1.5">{{cp.price_hour | number : '1.2-2' }} บาท ต่อชั่วโมง</div>
                                     </div>
                                 </div>
                             </div>
@@ -59,53 +59,55 @@
                         </div>
 
                     </div>
-
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
-                        <!--firstname and lastname-->
+                    <div class="flex flex-col w-full lg:w-2/6 p-5">
+                        <div class="flex">
+                            <mat-form-field class="w-full">
+                                <mat-label>หมวดหมู่วิชา
+                                </mat-label>
+                                <mat-select [formControlName]="'tutor_service_id'">
+                                    <mat-option [value]="''">
+                                        <span>เลือกหมวดหมู่วิชา</span>
+                                    </mat-option>
+                                    <mat-option *ngFor="let item of subjects.data" [value]="item.id">
+                                        {{item.name}} 
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full lg:w-4/6 p-5"> 
                         <div class="flex">
                             <mat-form-field class="w-full">
                                 <mat-label>
                                     ชื่อคอร์สเรียนที่คุณสอน
                                 </mat-label>
-                                <input matInput [formControlName]="'line'">
+                                <input matInput [formControlName]="'name'">
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 p-5">
-                        <!--firstname and lastname-->
+                    <div class="flex flex-col w-full lg:w-4/4 p-5"> 
                         <div class="flex">
                             <mat-form-field class="w-full">
                                 <mat-label>
                                     สิ่งที่จะได้เรียน
                                 </mat-label>
-                                <input matInput [formControlName]="'line'">
+                                <input matInput [formControlName]="'target'">
                             </mat-form-field>
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-full lg:w-2/4 p-5">
-                        <!--firstname and lastname-->
+                    <div class="flex flex-col w-full lg:w-2/4 p-5"> 
                         <div class="flex">
                             <mat-form-field class="w-full">
                                 <mat-label>
-                                    ราคา
+                                    ราคา ต่อชั่วโมง
                                 </mat-label>
-                                <input matInput [formControlName]="'line'">
+                                <input matInput [formControlName]="'price_hour'">
                             </mat-form-field>
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-full lg:w-2/4 p-5">
-                        <!--firstname and lastname-->
-                        <div class="flex">
-                            <mat-form-field class="w-full">
-                                <mat-label>
-                                    ชั่วโมงสอน
-                                </mat-label>
-                                <input matInput [formControlName]="'line'">
-                            </mat-form-field>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             <!-- button -->
