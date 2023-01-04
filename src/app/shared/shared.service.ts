@@ -21,6 +21,12 @@ export class ServiceShared {
         },
     });
 
+    Toast_Stick = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false, 
+    });
+
     /**
      * Fuse Alert Service
      */

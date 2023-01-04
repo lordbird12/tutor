@@ -1282,4 +1282,39 @@ export class Service {
                 })
             );
     }
+
+
+
+      // -----------------------------------------------------------------------------------------------------
+    // @ Public methods Profile-list
+    // -----------------------------------------------------------------------------------------------------
+    //* GET contact by tutor_id
+    getContactById(tutor_id: any): Observable<any[]> { 
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/contact/' + tutor_id)
+            .pipe( 
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })  
+            );
+    };
+    //* UPDATE contact by tutor_id
+    saveContact(data: any): Observable<any> { 
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/contact',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            );
+            
+    }
 }

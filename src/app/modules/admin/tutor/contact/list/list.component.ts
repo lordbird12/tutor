@@ -14,6 +14,8 @@ import { sortBy, startCase } from 'lodash-es';
 import { AssetType, DataPosition, PositionPagination } from '../page.types';
 import { Service } from '../page.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { ServiceShared } from 'app/shared/shared.service'; 
+
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
@@ -28,7 +30,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
-
+    itemData: any = [];
+    tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
     /**
      * Constructor
      */
@@ -43,7 +46,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
+        private _Ssh: ServiceShared,
     ) {
+        this.formData = this._formBuilder.group({
+            email: ['', Validators.required],
+            phone: ['', Validators.required],
+            line: ['', Validators.required],
+            facebook: [''],
+            youtube: [''], 
+        })
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -54,17 +65,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.formData = this._formBuilder.group({
-            phone: ['', Validators.required],
-            line: ['', Validators.required],
-            facebook: ['', Validators.required],
-            youtube: ['', Validators.required],
-            website: ['', Validators.required],
-        })
+        this._Service.getContactById(this.tutor_id).subscribe((resp: any) => { 
+            let data = resp.data ? resp.data : [];  
+            this.formData.patchValue({
+                ...data
+            });
+        })  
     }
 
-
-
+ 
     /**
      * After view init
      */
@@ -84,9 +93,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
-
-
+ 
 
     resetForm(): void {
         this.formData.reset();
@@ -118,7 +125,22 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     update() {
-        //
+        let postData = { tutor_id : this.tutor_id, ...this.formData.value}; 
+        this._Service.saveContact(postData).subscribe((resp: any) => {   
+            if(resp.status === true){ 
+                  this._Ssh.Toast.fire({
+                    icon: 'success',
+                    title: 'บันทึกข้อมูลสำเร็จ'
+                  })
+            }else{ 
+                let code = resp.code ? resp.code : '' ;
+                this._Ssh.Toast_Stick.fire({
+                    icon: 'error',
+                    title: 'บันทึกข้อมูลไม่สำเร็จ', 
+                    text: 'เกิดข้อผิดพลาด : '+ code  , 
+                  }) 
+            } 
+        }) ;
     }
 
 }

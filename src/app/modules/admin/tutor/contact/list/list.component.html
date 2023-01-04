@@ -16,16 +16,25 @@
     <!-- Main -->
     <div class="flex-auto p-3 sm:p-10">
         <form class="flex flex-col mt-3 pb-4 bg-card shadow overflow-hidden ng-valid" [formGroup]="formData">
-            <div class="flex flex-col sm:flex-row p-8">
-
-
+            <div class="flex flex-col sm:flex-row px-8">  
                 <div class="flex flex-auto flex-wrap">
                     <div class="flex flex-col w-full lg:w-4/4 p-5">
-                        <fuse-alert [appearance]="'outline'" [type]="'success'">
+                        <fuse-alert [appearance]="'outline'" [type]="'info'">
                             ช่วยให้ลูกค้าติดต่อคุณได้ง่ายขึ้นด้วยการให้ข้อมูลการติดต่อต่างๆ ที่หลากหลายของคุณ
                         </fuse-alert>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
+                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5 py-1">
+                        <!--firstname and lastname-->
+                        <div class="flex">
+                            <mat-form-field class="w-full">
+                                <mat-label>
+                                    Email
+                                </mat-label>
+                                <input matInput [formControlName]="'email'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full lg:w-4/4 p-5 py-1">
                         <!--firstname and lastname-->
                         <div class="flex">
                             <mat-form-field class="w-full">
@@ -36,7 +45,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
+                    <div class="flex flex-col w-full lg:w-4/4 p-5 py-1">
                         <!--firstname and lastname-->
                         <div class="flex">
                             <mat-form-field class="w-full">
@@ -47,7 +56,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
+                    <div class="flex flex-col w-full lg:w-4/4 p-5 py-1">
                         <!--firstname and lastname-->
                         <div class="flex">
                             <mat-form-field class="w-full">
@@ -58,7 +67,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
+                    <div class="flex flex-col w-full lg:w-4/4 p-5 py-1">
                         <!--firstname and lastname-->
                         <div class="flex">
                             <mat-form-field class="w-full">
@@ -69,18 +78,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
-                        <!--firstname and lastname-->
-                        <div class="flex">
-                            <mat-form-field class="w-full">
-                                <mat-label>
-                                    Website
-                                </mat-label>
-                                <input matInput [formControlName]="'website'">
-                            </mat-form-field>
-                        </div>
-                    </div>
-
+                    
                 </div>
             </div>
             <!-- button -->

@@ -35,6 +35,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     showAlert: boolean = false; 
     itemData: any = [];
     tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
+
+    settingInput: any =  '';
     /**
      * Constructor
      */
@@ -51,10 +53,14 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _Ssh: ServiceShared,
 
     ) { 
+      
         this.formData = this._formBuilder.group({
-            name: ['', Validators.required],
-            description: ['', Validators.required],
+            name: [''],
+            description: [''],
+            // name: ['', Validators.required],
+            // description: ['', Validators.required],
         }); 
+        // this.formData.disable();
     }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -62,17 +68,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   
     /**
      * On init
-     */
-    
+     */ 
     ngOnInit(): void {   
         this._Service.getInfoById(this.tutor_id).subscribe((resp: any) => { 
-            this.itemData = resp.data ? resp.data : []; 
-            let { name  , description } = this.itemData; 
+            let { name  , description } = resp.data ? resp.data : [];  
             this.formData.patchValue({
                 name: name ,
                 description: description ,
             });
-        });
+        }); 
     }
 
     /**
@@ -122,24 +126,22 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
  
     update() {  
-        let postData = { tutor_id:this.tutor_id , ...this.formData.value};
-        // let postData = { tutor_id: 0 , ...this.formData.value};
+        let postData = { tutor_id:this.tutor_id , ...this.formData.value}; 
         this._Service.saveInfo(postData).subscribe((resp: any) => {   
-            if(resp.status == true){ 
+            if(resp.status === true){ 
                   this._Ssh.Toast.fire({
                     icon: 'success',
-                    title: 'บันทึกข้อมูลเรียบร้อย'
+                    title: 'บันทึกข้อมูลสำเร็จ'
                   })
             }else{ 
-                this._Ssh.Toast.fire({
+                let code = resp.code ? resp.code : '' ;
+                this._Ssh.Toast_Stick.fire({
                     icon: 'error',
-                    title: 'เกิดข้อผิดพลาด : '+ resp.code, 
+                    title: 'บันทึกข้อมูลไม่สำเร็จ', 
+                    text: 'เกิดข้อผิดพลาด : '+ code  , 
                   }) 
             } 
         }) ;
-
-
-        
  
     }
 

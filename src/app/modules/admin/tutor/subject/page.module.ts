@@ -33,15 +33,14 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { FuseAlertModule } from '@fuse/components/alert';
-
-
+ 
 import { PageComponent } from './page.component';
 import { pageRoute } from './page.routing';
 import { ListComponent } from './list/list.component';
 import { NewComponent } from './new/new.component';
 import { EditComponent } from './edit/edit.component';
 import { DataTablesModule } from 'angular-datatables';
-
+import { FuseCardModule } from '@fuse/components/card';  
 @NgModule({
   declarations: [
     PageComponent,
@@ -82,7 +81,9 @@ import { DataTablesModule } from 'angular-datatables';
     MatExpansionModule,
     NgxMatTimepickerModule.setLocale('en-GB'),
     DataTablesModule,
-    FuseAlertModule
+    FuseAlertModule,
+    FuseCardModule,  
+    
   ]
 })
 export class Module {
