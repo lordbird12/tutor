@@ -55,7 +55,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     formData: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     flashMessage: 'success' | 'error' | null = null;
-    isLoading: boolean = false;
+    isLoading: boolean = false; 
     tutor_id = JSON.parse(localStorage.getItem('user')).user.id;
     subjects: any;
     SubjectForm: any = [];
