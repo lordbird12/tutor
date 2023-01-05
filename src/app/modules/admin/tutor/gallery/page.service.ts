@@ -1282,4 +1282,59 @@ export class Service {
                 })
             );
     }
+
+     //////////////////////////////////////////
+    //* list dropdown gallery by tutor_id
+    listDrdwGallery(tutor_id: any): Observable<any[]> {
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/get_gallery/' + tutor_id)
+            .pipe(
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })
+            );
+    }
+    
+    //* UPDATE Price by tutor_id
+    saveGallery(data: any): Observable<any> {
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/gallery',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
+    
+    //* DELETE
+    delGallery(id: any): Observable<any> {
+        return this._httpClient
+            .delete<any[]>(environment.API_URL + '/api/gallery/' + id)
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
+
+    uploadFileGallery(item: FormData): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                environment.API_URL + 'api/gallery',
+                item,
+                this.httpOptionsFormdata
+            )
+            .pipe(catchError(this.handlerError));
+    }
 }

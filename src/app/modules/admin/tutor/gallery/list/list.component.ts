@@ -37,6 +37,8 @@ import { sortBy, startCase } from 'lodash-es';
 import { AssetType, DataPosition, PositionPagination } from '../page.types';
 import { Service } from '../page.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { ServiceShared } from 'app/shared/shared.service';    
+import Swal from 'sweetalert2';
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
@@ -52,9 +54,10 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
 
     files: File[] = [];
+    tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
 
-    images: any = ['assets/images/gallery/1.jpg', 'assets/images/gallery/2.jpg', 'assets/images/gallery/3.jpg', 'assets/images/gallery/4.jpg'];
-
+    // images: any = ['assets/images/gallery/1.jpg', 'assets/images/gallery/2.jpg', 'assets/images/gallery/3.jpg', 'assets/images/gallery/4.jpg'];
+    images: any;
     /**
      * Constructor
      */
@@ -67,7 +70,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _matDialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _authService: AuthService
+        private _authService: AuthService,
+        private _Ssh: ServiceShared,
+
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -79,10 +84,18 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit(): void {
         this.formData = this._formBuilder.group({
-            name: ['', Validators.required],
-            description: ['', Validators.required],
+            // name: ['', Validators.required],
+            // description: ['', Validators.required],
+            images: ['', Validators.required],
         });
+        this.display();
     }
+    display(): void {
+        this._Service.listDrdwGallery(this.tutor_id).subscribe((resp: any) => { 
+            console.clear();
+            this.images = resp ? resp : { data: [] };   
+        });  
+    } 
 
     /**
      * After view init
@@ -131,7 +144,51 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     update() {
-        //
+         
+        if (this.formData.valid === true) {
+            let img = this.formData.value ; 
+            let filesSelected =   img.images ; 
+            let sendData = new FormData();  
+            console.log('filesSelected ' , filesSelected );
+            for (let i = 0; i <  filesSelected.length; i++) {
+                console.log('filesSelected ' , filesSelected[i] ); 
+                sendData.append('images[]', filesSelected[i]);
+              }
+              sendData.append('tutor_id', this.tutor_id);
+          
+
+            // let postData = {
+            //     tutor_id: this.tutor_id,
+            //     ...this.formData.value,
+            // };
+            console.log('sendData' , sendData)
+            this._Service.uploadFileGallery(sendData).subscribe((resp: any) => {
+                if (resp.status === true) {
+                    this._Ssh.Toast.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                    });
+                    this._router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this._router.navigate(['/tutor/gallery/list']);
+                        });
+                } else {
+                    let code = resp.code ? resp.code : '';
+                    this._Ssh.Toast_Stick.fire({
+                        icon: 'error',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: 'เกิดข้อผิดพลาด : ' + code,
+                    });
+                }
+            });
+        } else {
+            Swal.fire(
+                'Warning!', //title
+                'กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!', //main text
+                'warning' //icon
+            );
+        }
     }
 
     onSelect(event) {
@@ -141,14 +198,14 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
             this._changeDetectorRef.detectChanges();
         }, 150);
         this.formData.patchValue({
-            photo: this.files[0],
+            images: this.files,
         });
     }
 
     onRemove(event) {
         this.files.splice(this.files.indexOf(event), 1);
         this.formData.patchValue({
-            photo: [],
+            images: [],
         });
     }
 }

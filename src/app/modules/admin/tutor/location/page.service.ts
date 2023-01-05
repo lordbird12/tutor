@@ -1282,7 +1282,7 @@ export class Service {
                 })
             );
     }
-    ///////////////////////////////////////////////////
+    //////////////////////////////////////////
     //* list dropdown location by tutor_id
     listDrdwLocation(tutor_id: any): Observable<any[]> {
         return this._httpClient
