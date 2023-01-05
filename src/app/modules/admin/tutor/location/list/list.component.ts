@@ -36,6 +36,8 @@ import { sortBy, startCase } from 'lodash-es';
 import { AssetType, DataPosition, PositionPagination } from '../page.types';
 import { Service } from '../page.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { ServiceShared } from 'app/shared/shared.service';    
+import Swal from 'sweetalert2';
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
@@ -49,7 +51,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
-
+    tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
+    Location : any;
     CountryData: any = [
         {
             name: 'กรุงเทพมหานคร',
@@ -130,8 +133,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _matDialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _authService: AuthService
-    ) {}
+        private _authService: AuthService ,
+        private _Ssh: ServiceShared,
+    ) {
+        this.formData = this._formBuilder.group({
+            name: ['', Validators.required], 
+            lat:  '' ,
+            lon:  '' , 
+        });
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -140,11 +150,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * On init
      */
-    ngOnInit(): void {
-        this.formData = this._formBuilder.group({
-            country: ['', Validators.required],
-            district: ['', Validators.required],
-        });
+    ngOnInit(): void { 
+        this.display();
     }
 
     /**
@@ -192,8 +199,83 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     textStatus(status: string): string {
         return startCase(status);
     }
+    display(): void {
+        this._Service.listDrdwLocation(this.tutor_id).subscribe((resp: any) => { 
+            console.clear();
+            this.Location = resp ? resp : { data: [] };   
+        });  
+    } 
 
-    update() {
-        //
+    update(): void {
+        if (this.formData.valid === true) {
+            let postData = {
+                tutor_id: this.tutor_id,
+                ...this.formData.value,
+            };
+            this._Service.saveLocation(postData).subscribe((resp: any) => {
+                if (resp.status === true) {
+                    this._Ssh.Toast.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                    });
+                    this._router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this._router.navigate(['/tutor/location/list']);
+                        });
+                } else {
+                    let code = resp.code ? resp.code : '';
+                    this._Ssh.Toast_Stick.fire({
+                        icon: 'error',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: 'เกิดข้อผิดพลาด : ' + code,
+                    });
+                }
+            });
+        } else {
+            Swal.fire(
+                'Warning!', //title
+                'กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!', //main text
+                'warning' //icon
+            );
+        }
     }
+
+    delLocation(id: any): void { 
+        Swal.fire({
+            title: 'ต้องการลบข้อมูล ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ตกลง',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            cancelButtonText: 'ปิดหน้าต่าง',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this._Service.delLocation(id).subscribe((resp: any) => {
+                    if (resp.status === true) {
+                        this._Ssh.Toast.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                        });
+                        this._router
+                            .navigateByUrl('/', { skipLocationChange: true })
+                            .then(() => {
+                                this._router.navigate(['/tutor/location/list']);
+                            });
+                    } else {
+                        let code = resp.code ? resp.code : '';
+                        this._Ssh.Toast_Stick.fire({
+                            icon: 'error',
+                            title: 'ลบข้อมูลไม่สำเร็จ',
+                            text: 'เกิดข้อผิดพลาด : ' + code,
+                        });
+                    }
+                });
+            }
+        });
+    }
+
 }

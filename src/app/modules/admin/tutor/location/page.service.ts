@@ -1282,4 +1282,57 @@ export class Service {
                 })
             );
     }
+    ///////////////////////////////////////////////////
+    //* list dropdown location by tutor_id
+    listDrdwLocation(tutor_id: any): Observable<any[]> {
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/get_location/' + tutor_id)
+            .pipe(
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })
+            );
+    }
+    //* GET location by id
+    getLocationById(id: any): Observable<any[]> {
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/location/' + id)
+            .pipe(
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })
+            );
+    }
+    //* UPDATE Price by tutor_id
+    saveLocation(data: any): Observable<any> {
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/location',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
+    
+    //* DELETE
+    delLocation(id: any): Observable<any> {
+        return this._httpClient
+            .delete<any[]>(environment.API_URL + '/api/location/' + id)
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
 }

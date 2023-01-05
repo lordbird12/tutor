@@ -1332,7 +1332,20 @@ export class Service {
                 })  
             );
     };
-    
+     //* DELETE
+     delPrice(id: any): Observable<any> {  
+        return this._httpClient
+            .delete<any[]>( environment.API_URL + '/api/price/'+ id )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            ); 
+    } 
+
 }
  
 export interface CoursePrice {

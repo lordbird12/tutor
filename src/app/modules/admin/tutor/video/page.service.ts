@@ -1282,4 +1282,47 @@ export class Service {
                 })
             );
     }
+   //////////////////////////////////////////////////////////
+    //* GET Video by id
+    getVideoById(id: any): Observable<any[]> {
+        return this._httpClient
+            .get<any[]>(environment.API_URL + '/api/video/' + id)
+            .pipe(
+                tap((meterial) => {
+                    this._materials.next(meterial);
+                })
+            );
+    }
+    //* UPDATE Video by tutor_id
+    saveVideo(data: any): Observable<any> {
+        // return  data
+        return this._httpClient
+            .post(
+                environment.API_URL + '/api/video',
+                data,
+                this.httpOptionsFormdata
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
+    
+    //* DELETE
+    delVideo(id: any): Observable<any> {
+        return this._httpClient
+            .delete<any[]>(environment.API_URL + '/api/video/' + id)
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                })
+            );
+    }
 }

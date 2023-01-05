@@ -1327,6 +1327,7 @@ export class Service {
             );
             
     }
+    
     listDrdwSubject (tutor_id: any): Observable<any[]> { 
         return this._httpClient
             .get<any[]>(environment.API_URL + '/api/get_service/' + tutor_id)
@@ -1336,4 +1337,20 @@ export class Service {
                 })  
             );
     };
+
+     //* DELETE
+     delCourse(id: any): Observable<any> {  
+        return this._httpClient
+            .delete<any[]>( environment.API_URL + '/api/course/'+ id )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            ); 
+    } 
+
+
 }

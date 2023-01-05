@@ -34,12 +34,13 @@
                                     <div class="flex items-center justify-between">
                                         <!-- Course category -->
                                         <div class="py-0.5 px-3 rounded-full text-sm font-semibold text-blue-800 bg-blue-100 dark:text-blue-50 dark:bg-blue-500">
-                                            หมวดหมู่ : ภาษาต่างประเทศ
+                                            หมวดหมู่ : ???
                                         </div>
                                         <!-- Completed at least once -->
-                                        <div class="flex items-center">
+                                        <div class="flex items-center"> 
                                             <ng-container>
-                                                <mat-icon class="icon-size-5 text-red-600" [svgIcon]="'heroicons_solid:trash'" [matTooltip]="'You completed this course at least once'"></mat-icon>
+                                                <mat-icon class="icon-size-5 text-red-600" [svgIcon]="'heroicons_solid:trash'" (click)="delCourse(data.id)"
+                                                [matTooltip]="'Delete'"></mat-icon>
                                             </ng-container>
                                         </div>
                                     </div>

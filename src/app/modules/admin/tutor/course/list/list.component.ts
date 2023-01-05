@@ -22,22 +22,20 @@ import Swal from 'sweetalert2';
     styleUrls: ['./list.component.scss'],
     // encapsulation: ViewEncapsulation.None,
     // changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: fuseAnimations
+    animations: fuseAnimations,
 })
-
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-    formData: FormGroup
+    formData: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
-    course:any  ;
-    tutor_id = JSON.parse(localStorage.getItem('user')).user.id; 
-    subjects : any;
+    course: any;
+    tutor_id = JSON.parse(localStorage.getItem('user')).user.id;
+    subjects: any;
     /**
      * Constructor
      */
     constructor(
-
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: FormBuilder,
@@ -47,16 +45,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
-        private _Ssh: ServiceShared,
-
+        private _Ssh: ServiceShared
     ) {
         this.formData = this._formBuilder.group({
             name: ['', Validators.required],
             target: ['', Validators.required],
             price: ['', Validators.required],
-            time: ['', Validators.required], 
-            tutor_service_id: ['', Validators.required], 
-        })
+            time: ['', Validators.required],
+            tutor_service_id: ['', Validators.required],
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,19 +63,16 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * On init
      */
-    ngOnInit(): void {
-        this.display(); 
-        this.listDrdwSubject();
+    ngOnInit(): void { 
+        this.listDrdwSubject();  
+        this.display();
     }
 
-
-
+    
     /**
      * After view init
      */
-    ngAfterViewInit(): void {
-
-    }
+    ngAfterViewInit(): void {}
 
     /**
      * On destroy
@@ -92,7 +86,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
- 
 
     resetForm(): void {
         this.formData.reset();
@@ -111,7 +104,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Hide it after 3 seconds
         setTimeout(() => {
-
             this.flashMessage = null;
 
             // Mark for check
@@ -123,55 +115,90 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         return startCase(status);
     }
 
-    display(): void {
-        this._Service.listDrdwCourse(this.tutor_id).subscribe((resp: any) => { 
+    display(): void { 
+        this._Service.listDrdwCourse(this.tutor_id).subscribe((resp: any) => {
             console.clear();
-            this.course = resp ? resp : { data: [] };  
-        }); 
-    } 
+            this.course = resp ? resp : { data: [] };
+        });
+    }
 
-    update(): void { 
-        if(this.formData.valid === true){
+    update(): void {
+        if (this.formData.valid === true) {
             let postData = {
-                tutor_id: this.tutor_id, 
+                tutor_id: this.tutor_id,
                 ...this.formData.value,
-            };  
-            console.log('dialogSave postData' , postData);  
-              this._Service.saveCourse(postData).subscribe((resp: any) => {
-                  if (resp.status === true) {
-                      this._Ssh.Toast.fire({
-                          icon: 'success',
-                          title: 'บันทึกข้อมูลสำเร็จ',
-                      });
-                      location.reload();
-                  } else {
-                      let code = resp.code ? resp.code : '';
-                      this._Ssh.Toast_Stick.fire({
-                          icon: 'error',
-                          title: 'บันทึกข้อมูลไม่สำเร็จ',
-                          text: 'เกิดข้อผิดพลาด : ' + code,
-                      });
-                  }
-              });
-
-        }else{
-
+            };
+            this._Service.saveCourse(postData).subscribe((resp: any) => {
+                if (resp.status === true) {
+                    this._Ssh.Toast.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                    });
+                    this._router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this._router.navigate(['/tutor/course/list']);
+                        });
+                } else {
+                    let code = resp.code ? resp.code : '';
+                    this._Ssh.Toast_Stick.fire({
+                        icon: 'error',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: 'เกิดข้อผิดพลาด : ' + code,
+                    });
+                }
+            });
+        } else {
             Swal.fire(
-                "Warning!", //title
-                "กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!", //main text
-                "warning" //icon
-              );
-
+                'Warning!', //title
+                'กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!', //main text
+                'warning' //icon
+            );
         }
-
-       
     }
 
     listDrdwSubject(): void {
-        this._Service.listDrdwSubject(this.tutor_id).subscribe((resp: any) => { 
+        this._Service.listDrdwSubject(this.tutor_id).subscribe((resp: any) => {
             console.clear();
-            this.subjects = resp ? resp : { data: [] };  
-        }); 
+            this.subjects = resp ? resp : { data: [] };
+        });
     }
 
+    delCourse(id: any): void {
+        console.log('delSubject', id);
+        Swal.fire({
+            title: 'ต้องการลบข้อมูล ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ตกลง',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            cancelButtonText: 'ปิดหน้าต่าง',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this._Service.delCourse(id).subscribe((resp: any) => {
+                    if (resp.status === true) {
+                        this._Ssh.Toast.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                        });
+                        this._router
+                            .navigateByUrl('/', { skipLocationChange: true })
+                            .then(() => {
+                                this._router.navigate(['/tutor/course/list']);
+                            });
+                    } else {
+                        let code = resp.code ? resp.code : '';
+                        this._Ssh.Toast_Stick.fire({
+                            icon: 'error',
+                            title: 'ลบข้อมูลไม่สำเร็จ',
+                            text: 'เกิดข้อผิดพลาด : ' + code,
+                        });
+                    }
+                });
+            }
+        });
+    }
 }

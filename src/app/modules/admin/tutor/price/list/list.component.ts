@@ -69,14 +69,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit(): void {
         this.listDrdwSubject();
-        this.display(); 
-        // setTimeout(() => {
-        //     this.display(); 
-        // }, 1000);
-       
-         
-        
-       
+        this.display();  
     }
 
 
@@ -135,45 +128,81 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         this._Service.listDrdwPrice(this.tutor_id).subscribe((resp: any) => { 
             console.clear();
             this.course_price = resp ? resp : { data: [] };   
-
-            console.log(this.course_price )
-        }); 
-     
+        });  
     } 
-
-    update(): void  {
-        if(this.formData.valid === true){
+ 
+    update(): void {
+        if (this.formData.valid === true) {
             let postData = {
-                tutor_id: this.tutor_id, 
+                tutor_id: this.tutor_id,
                 ...this.formData.value,
-            };  
-            console.log('dialogSave postData' , postData);  
-            //   this._Service.saveCourse(postData).subscribe((resp: any) => {
-            //       if (resp.status === true) {
-            //           this._Ssh.Toast.fire({
-            //               icon: 'success',
-            //               title: 'บันทึกข้อมูลสำเร็จ',
-            //           });
-            //           location.reload();
-            //       } else {
-            //           let code = resp.code ? resp.code : '';
-            //           this._Ssh.Toast_Stick.fire({
-            //               icon: 'error',
-            //               title: 'บันทึกข้อมูลไม่สำเร็จ',
-            //               text: 'เกิดข้อผิดพลาด : ' + code,
-            //           });
-            //       }
-            //   });
-
-        }else{
-
+            };
+            this._Service.savePrice(postData).subscribe((resp: any) => {
+                if (resp.status === true) {
+                    this._Ssh.Toast.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                    });
+                    this._router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this._router.navigate(['/tutor/price/list']);
+                        });
+                } else {
+                    let code = resp.code ? resp.code : '';
+                    this._Ssh.Toast_Stick.fire({
+                        icon: 'error',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: 'เกิดข้อผิดพลาด : ' + code,
+                    });
+                }
+            });
+        } else {
             Swal.fire(
-                "Warning!", //title
-                "กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!", //main text
-                "warning" //icon
-              );
-
+                'Warning!', //title
+                'กรุณาระบุข้อมูลให้ครบ ก่อนทำรายการ!!', //main text
+                'warning' //icon
+            );
         }
+    }
+
+    
+    delPrice(id: any): void {
+        console.log('delSubject', id);
+        Swal.fire({
+            title: 'ต้องการลบข้อมูล ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ตกลง',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            cancelButtonText: 'ปิดหน้าต่าง',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this._Service.delPrice(id).subscribe((resp: any) => {
+                    if (resp.status === true) {
+                        this._Ssh.Toast.fire({
+                            icon: 'success',
+                            title: 'ลบข้อมูลสำเร็จ',
+                        });
+                        this._router
+                            .navigateByUrl('/', { skipLocationChange: true })
+                            .then(() => {
+                                this._router.navigate(['/tutor/price/list']);
+                            });
+                    } else {
+                        let code = resp.code ? resp.code : '';
+                        this._Ssh.Toast_Stick.fire({
+                            icon: 'error',
+                            title: 'ลบข้อมูลไม่สำเร็จ',
+                            text: 'เกิดข้อผิดพลาด : ' + code,
+                        });
+                    }
+                });
+            }
+        });
     }
 
     listDrdwSubject(): void {
@@ -181,6 +210,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
             console.clear();
             this.subjects = resp ? resp : { data: [] };  
         }); 
+        
     }
 
 }

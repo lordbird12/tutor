@@ -133,6 +133,11 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
                     icon: 'success',
                     title: 'บันทึกข้อมูลสำเร็จ'
                   })
+                  this._router
+                  .navigateByUrl('/', { skipLocationChange: true })
+                  .then(() => {
+                      this._router.navigate(['/tutor/profile/list']);
+                  }); 
             }else{ 
                 let code = resp.code ? resp.code : '' ;
                 this._Ssh.Toast_Stick.fire({

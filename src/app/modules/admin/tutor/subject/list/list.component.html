@@ -32,16 +32,30 @@
                             <!-- /// วิชาที่รับสอน -->
 
                             <div *ngFor="let data of subjects.data; index as i;"
-                                class="flex flex-col shadow rounded-2xl overflow-hidden bg-card">
+                                class="flex flex-col shadow rounded-2xl overflow-hidden bg-card" >
                                 <div class="flex flex-col p-6">
                                     <div class="flex items-center justify-between">
-                                        <div class="mt-4 text-lg font-medium"> {{data.name}}</div>
-                                        <!-- Completed at least once -->
+                                        <div class="mt-4 text-lg font-medium"> {{data.name}}</div> 
+                                            <!-- <div class="-mr-3">
+                                                <button mat-icon-button [matMenuTriggerFor]="listCard05Menu">
+                                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                                                </button>
+                                                <mat-menu #listCard05Menu="matMenu">
+                                                    <button mat-menu-item (click)="editClickDialog(data.id)">
+                                                        <mat-icon class="icon-size-5 text-blue-600" svgIcon="heroicons_solid:search"
+                                                        [matTooltip]="'Delete'"></mat-icon>Detail</button> 
+                                                    <button mat-menu-item (click)="delSubject(data.id)"> 
+                                                        <mat-icon class="icon-size-5 text-red-600" [svgIcon]="'heroicons_solid:trash'" 
+                                                        [matTooltip]="'Delete'"></mat-icon>Delete</button>
+                                                </mat-menu>
+                                            </div> -->
+                                       
                                         <div class="flex items-center">
                                             <ng-container>
-                                                <mat-icon class="icon-size-5 text-red-600"
-                                                    [svgIcon]="'heroicons_solid:trash'"
-                                                    [matTooltip]="'You completed this course at least once'"></mat-icon>
+                                                <mat-icon class="icon-size-5 text-blue-600 mx-2" [svgIcon]="'heroicons_solid:eye'" (click)="editClickDialog(data.id)"
+                                                    [matTooltip]="'Details'"></mat-icon>
+                                                <mat-icon class="icon-size-5 text-red-600" [svgIcon]="'heroicons_solid:trash'" (click)="delSubject(data.id)"
+                                                    [matTooltip]="'Delete'"></mat-icon>
                                             </ng-container>
                                         </div>
                                     </div>
@@ -84,18 +98,18 @@
 
 <!-- The dialog -->
 <div id="dialog"
-    class=" hidden fixed h-4/5 sm:h-4/5 z-999 top-24 sm:top-16 left-0 sm:left-1/4 inset-0 w-full sm:w-6/12 md:w-6/12 bg-white rounded-md px-5 py-5 drop-shadow-lg">
+    class=" hidden fixed h-4/5 sm:h-4/5 z-999 top-24 sm:top-16 left-0 sm:left-1/4 inset-0 w-full sm:w-6/12 md:w-6/12 bg-white rounded-md px-5 py-4 pb-8 drop-shadow-lg">
     <!-- header -->
     <!-- <div class="flex items-start justify-between"> -->
     <div class="flex items-start justify-between">
 
         <div class="flex flex-col w-full lg:w-6/6 py-2">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                ข้อมูลวิชาสอบที่รับสอน
+                ข้อมูลวิชาที่รับสอน
             </h3>
         </div>
 
-        <button type="button" (click)="actionClickDialog('Close')"
+        <button type="button" (click)="actionClickDialog('Close' )"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
             data-modal-toggle="defaultModal">
             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -121,95 +135,105 @@
                     <h3 class="text-xl font-bold dark:text-white">
                         คัดกรองนักเรียน
                     </h3>
-                    <fuse-card class="flex flex-col w-full px-8 pt-6 pb-4 filter-list">
+                    <fuse-card class="flex flex-col w-full px-8 pt-6 pb-4 mb-4 filter-list">
                         <div class="flex items-center justify-between">
-                            <div class="text-2xl font-semibold leading-tight">คุณสอนผู้เรียนวัยใด?</div>
-                            <!-- <div class="-mr-3">
-                                <button
-                                    mat-icon-button
-                                    [matMenuTriggerFor]="listCard05Menu">
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
-                                </button>
-                                <mat-menu #listCard05Menu="matMenu">
-                                    <button mat-menu-item>Mark all as done</button>
-                                    <button mat-menu-item>Mark all as undone</button>
-                                    <button mat-menu-item>Remove list</button>
-                                </mat-menu>
-                            </div> -->
+                            <div class="text-xl font-semibold leading-tight">คุณสอนผู้เรียนวัยใด?</div>
                         </div>
                         <div class="flex flex-col mt-3">
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_1'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_1'" checked="true">
                                 วัยอนุบาล
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_2'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_2'" checked="true">
 
                                 วัยประถม
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_3'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_3'" checked="true">
                                 วัยมัธยมต้น
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_4'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_4'" checked="true">
                                 วัยมัธยมปลาย
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_5'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_5'" checked="true">
                                 วัยมหาวิทยาลัย
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_6'">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_6'" checked="true">
                                 วัยผู้ใหญ่
                             </mat-checkbox>
 
                         </div>
-                        <!-- <div class="flex items-center mt-3 -mx-3">
-                            <button
-                                class="px-3"
-                                mat-button
-                                [color]="'primary'">
-                                Add item
-                            </button>
-                        </div> -->
                     </fuse-card>
 
-                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 filter-list">
+                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 mb-4 filter-list">
                         <div class="flex items-center justify-between">
-                            <div class="text-2xl font-semibold leading-tight">คุณสอนผู้เรียนวัยใด?</div>
-                            <!-- <div class="-mr-3">
-                                <button
-                                    mat-icon-button
-                                    [matMenuTriggerFor]="listCard05Menu">
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
-                                </button>
-                                <mat-menu #listCard05Menu="matMenu">
-                                    <button mat-menu-item>Mark all as done</button>
-                                    <button mat-menu-item>Mark all as undone</button>
-                                    <button mat-menu-item>Remove list</button>
-                                </mat-menu>
-                            </div> -->
+                            <div class="text-xl font-semibold leading-tight">วันที่สามารถสอนได้?</div>
                         </div>
                         <div class="flex flex-col mt-3">
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_1'">
-                                วัยอนุบาล
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'teach_date_1'" checked="true">
+                                วันจันทร์ - วันศุกร์
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_2'">
-
-                                วัยประถม
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'teach_date_2'" checked="true">
+                                วันเสาร์ - วันอาทิตย์
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_3'">
-                                วัยมัธยมต้น
+                        </div>
+                    </fuse-card>
+                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 mb-4 filter-list">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xl font-semibold leading-tight">ช่วงเวลาของวันที่สามารถสอนได้?</div>
+                        </div>
+                        <div class="flex flex-col mt-3">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'teach_time_1'" checked="true">
+                                เช้า
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_4'">
-                                วัยมัธยมปลาย
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'teach_time_2'" checked="true">
+                                วันเสาร์ - วันอาทิตย์
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_5'">
-                                วัยมหาวิทยาลัย
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'teach_time_3'" checked="true">
+                                วันเสาร์ - วันอาทิตย์
                             </mat-checkbox>
-                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'student_teach_6'">
-                                วัยผู้ใหญ่
+                        </div>
+                    </fuse-card>
+                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 mb-4 filter-list">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xl font-semibold leading-tight">เลือกความพร้อมของผู้เรียน?</div>
+                        </div>
+                        <div class="flex flex-col mt-3">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'availability_1'" checked="true">
+                                ทันทีที่พบคุณครูที่ผู้เรียนต้องการ
                             </mat-checkbox>
-
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'availability_2'" checked="true">
+                                ยังไม่แน่ใจ แต่ต้องการเริ่มเรียนเร็วๆนี้
+                            </mat-checkbox>
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'availability_3'" checked="true">
+                                ไม่ใช่ตอนนี้ ไม่รู้เมื่อใด
+                            </mat-checkbox>
+                        </div>
+                    </fuse-card>
+                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 mb-4 filter-list">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xl font-semibold leading-tight">คุณสอนอย่างไร?</div>
+                        </div>
+                        <div class="flex flex-col mt-3">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'how_to_1'" checked="true">
+                                ตัวต่อตัว
+                            </mat-checkbox>
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'how_to_2'" checked="true">
+                                ออนไลน์ (video call)
+                            </mat-checkbox>
+                          
+                        </div>
+                    </fuse-card>
+                    <fuse-card class="flex flex-col  w-full px-8 pt-6 pb-4 mb-4 filter-list">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xl font-semibold leading-tight">คุณสอนลูกค้าคลาสละ 1 คน หรือสอนเป็นกลุ่ม?</div>
+                        </div>
+                        <div class="flex flex-col mt-3">
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'client_1'" checked="true">
+                                คนเดียว
+                            </mat-checkbox>
+                            <mat-checkbox class="my-1" [color]="'primary'" [formControlName]="'client_2'" checked="true">
+                                เป็นกลุ่ม
+                            </mat-checkbox>
+                          
                         </div>
                     </fuse-card>
                 </div>
@@ -221,8 +245,8 @@
     </div>
     <!-- Footer -->
     <div class="mt-4 flex justify-end">
-        <button id="save" mat-raised-button bg-blue-200 (click)="dialogSave()"> บันทึก </button>
-        <button id="close" mat-raised-button bg-primary-200 color="primary" (click)="actionClickDialog('Close')">
+        <button id="save" class="mat-primary  " *ngIf="[{CheckEdit}]"   mat-flat-button mat-raised-button    (click)="dialogSave()"> บันทึก </button>
+        <button id="close" class="text-gray-400" mat-flat-button  (click)="actionClickDialog('Close')">
             ปิดหน้าต่าง</button>
     </div>
 

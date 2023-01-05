@@ -17,8 +17,7 @@
     <div class="flex-auto p-3 sm:p-10">
         <form class="flex flex-col mt-3 pb-4 bg-card shadow overflow-hidden ng-valid" [formGroup]="formData">
             <div class="flex flex-col sm:flex-row p-8">
-
-
+ 
                 <div class="flex flex-auto flex-wrap">
                     <div class="flex flex-col w-full lg:w-4/4 p-5">
                         <fuse-alert [appearance]="'outline'" [type]="'info'">
@@ -27,20 +26,35 @@
                             <br><br> วิดีโอของคุณควรช่วยให้ลูกค้าเข้าใจข้อมูลอย่างน้อย 3 อย่างต่อไปนี้<br> 1. คุณเป็นใคร?<br> 2. คลาสที่คุณสอนเกี่ยวกับอะไรบ้าง?<br> 3. ทำไมลูกค้าควรเลือกเรียนกับคุณ? คุณมีสไตล์การสอนแบบใด?
                         </fuse-alert>
                     </div>
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5 items-center">
-                        <div class="flex flex-wrap items-center -mx-1 ng-star-inserted">
-                            <youtube-player #player videoId="PRQCAL_RMVo"></youtube-player>
+
+                    
+                    <!-- <mat-icon class="icon-size-5 text-red-600" [svgIcon]="'heroicons_solid:trash'"
+                    (click)="delVideo()" [matTooltip]="'Delete'"></mat-icon> -->
+                   
+                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5 items-center"> 
+                        <div class="flex flex-wrap items-center -mx-1 ng-star-inserted"> 
+                            <youtube-player #player videoId="{{this.path}}"></youtube-player>
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-full lg:w-4/4 mt-5 p-5">
-                        <!--firstname and lastname-->
+                    <div class="flex flex-col w-full lg:w-4/4 mt-6 pb-1 p-5"> 
+                        <div class="flex">
+                            <mat-form-field class="w-full">
+                                <mat-label>
+                                    ชื่อ Video
+                                </mat-label>
+                                <input matInput [formControlName]="'name'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-full lg:w-4/4 pb-1 p-5"> 
                         <div class="flex">
                             <mat-form-field class="w-full">
                                 <mat-label>
                                     YouTube ID
                                 </mat-label>
-                                <input matInput [formControlName]="'video_path'">
+                                <input matInput [formControlName]="'path'">
                             </mat-form-field>
                         </div>
                     </div>

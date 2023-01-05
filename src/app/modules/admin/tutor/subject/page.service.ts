@@ -1325,4 +1325,19 @@ export class Service {
             );
             
     }
+
+    //* DELETE
+    delSubject(id: any): Observable<any> {  
+        return this._httpClient
+            .delete<any[]>( environment.API_URL + '/api/service/'+ id )
+            .pipe(
+                switchMap((response: any) => {
+                    return of(response);
+                }),
+                catchError((error) => {
+                    return of(error.error);
+                }) 
+            );
+            
+    }
 }
