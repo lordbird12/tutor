@@ -35,6 +35,7 @@ import {
 import { environment } from 'environments/environment';
 import { AssetCategory } from 'app/shared/asset-category';
 import { DataTablesResponse } from 'app/shared/datatable.types';
+import Swal from 'sweetalert2';
 
 // import { UserDetail } from '../user/user.types';
 const token = localStorage.getItem('accessToken') || null;
@@ -1290,11 +1291,11 @@ export class Service {
     // @ Public methods Profile-list
     // -----------------------------------------------------------------------------------------------------
     //* GET info by tutor_id
-    getInfoById(tutor_id: any): Observable<any[]> { 
+    getInfoById(tutor_id: any): Observable<any[]> {  
         return this._httpClient
             .get<any[]>(environment.API_URL + '/api/info/' + tutor_id)
-            .pipe( 
-                tap((meterial) => {
+            .pipe(  
+                tap((meterial) => { 
                     this._materials.next(meterial);
                 })  
             );
@@ -1317,6 +1318,19 @@ export class Service {
                 }) 
             );
             
+    }
+
+    async loading() {
+        Swal.fire({
+            title: 'กรุณารอสักครู่ !',
+            text: 'กำลังโหลดข้อมูล...', // add html attribute if you want or remove
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            didRender: () => {
+                Swal.showLoading(Swal.getDenyButton());
+            },
+        });
     }
 
   

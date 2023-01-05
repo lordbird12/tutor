@@ -151,8 +151,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
             let sendData = new FormData();  
             console.log('filesSelected ' , filesSelected );
             for (let i = 0; i <  filesSelected.length; i++) {
-                console.log('filesSelected ' , filesSelected[i] ); 
-                sendData.append('images[]', filesSelected[i]);
+                console.log('filesSelected name' , filesSelected[i].name ); 
+                sendData.append('images[]', filesSelected[i].name );
+               
               }
               sendData.append('tutor_id', this.tutor_id);
           

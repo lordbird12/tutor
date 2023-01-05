@@ -255,6 +255,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         var overlay = document.getElementById('overlay');
 
         if (type == 'Open') {
+            this.CheckEdit = true;
             dialog.classList.remove('hidden');
             overlay.classList.remove('hidden');
             this.resetForm();
@@ -265,7 +266,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     editClickDialog(id: any): void {
+        
         this.actionClickDialog('Open'); 
+        this.CheckEdit = false;
         this._Service.getSubjectById(id).subscribe((resp: any) => {
             console.clear();
             let subjects = resp ? resp.data : { data: [] };

@@ -245,7 +245,7 @@
     </div>
     <!-- Footer -->
     <div class="mt-4 flex justify-end">
-        <button id="save" class="mat-primary  " *ngIf="[{CheckEdit}]"   mat-flat-button mat-raised-button    (click)="dialogSave()"> บันทึก </button>
+        <button id="save" class="mat-primary  " *ngIf="CheckEdit == true"   mat-flat-button mat-raised-button    (click)="dialogSave()"> บันทึก </button>
         <button id="close" class="text-gray-400" mat-flat-button  (click)="actionClickDialog('Close')">
             ปิดหน้าต่าง</button>
     </div>

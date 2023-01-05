@@ -70,15 +70,18 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
      * On init
      */ 
     ngOnInit(): void {   
+        // this.loading();
         this._Service.getInfoById(this.tutor_id).subscribe((resp: any) => { 
             let { name  , description } = resp.data ? resp.data : [];  
             this.formData.patchValue({
                 name: name ,
                 description: description ,
             });
+            // Swal.close();
         }); 
+       
     }
-
+  
     /**
      * After view init
      */
@@ -125,10 +128,10 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         return startCase(status);
     }
  
-    update() {  
+    update() {   
         let postData = { tutor_id:this.tutor_id , ...this.formData.value}; 
         this._Service.saveInfo(postData).subscribe((resp: any) => {   
-            if(resp.status === true){ 
+            if(resp.status === true){  
                   this._Ssh.Toast.fire({
                     icon: 'success',
                     title: 'บันทึกข้อมูลสำเร็จ'
@@ -138,6 +141,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
                   .then(() => {
                       this._router.navigate(['/tutor/profile/list']);
                   }); 
+                //   Swal.close;
             }else{ 
                 let code = resp.code ? resp.code : '' ;
                 this._Ssh.Toast_Stick.fire({
@@ -145,10 +149,21 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
                     title: 'บันทึกข้อมูลไม่สำเร็จ', 
                     text: 'เกิดข้อผิดพลาด : '+ code  , 
                   }) 
-            } 
+            }  
         }) ;
- 
+        
     }
 
-  
+    async loading() {
+        Swal.fire({
+            title: 'กรุณารอสักครู่ !',
+            text: 'กำลังโหลดข้อมูล...', // add html attribute if you want or remove
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            didRender: () => {
+                Swal.showLoading(Swal.getDenyButton());
+            },
+        });
+    }
 }
